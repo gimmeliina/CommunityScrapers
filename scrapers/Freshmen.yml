@@ -1,0 +1,30 @@
+name: Freshmen
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - freshmen.net
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: //*[@id="top"]/main/div/div/div[2]/div[2]/div[1]/div[1]/div/h1
+      Performers:
+        Name: //div[@class="actor"]
+      Details:
+        selector: //*[@id="top"]/main/div/div/div[2]/div[2]/div[1]/div[1]/div/p/text()
+      Studio:
+        Name:
+          Fixed: Freshmen
+      Image:
+        selector: //video/@poster
+driver:
+  cookies:
+    - CookieURL: "https://freshmen.net"
+      Cookies:
+        - Name: "age"
+          Domain: ".freshmen.net"
+          Value: "true"
+          Path: "/"
+  useCDP: true
+
+# Last Updated August 08, 2021

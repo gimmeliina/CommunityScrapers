@@ -1,0 +1,34 @@
+name: Jawked
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - jawked.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: //span[@class="title"]
+      Date:
+        selector: //*[@id="mm-0"]/section[2]/div[1]/div[2]/div[2]/span[3]/span[2]
+        postProcess:
+          - parseDate: Jan 2th, 2006
+      Performers:
+        Name: //span[@class="content"]/a
+      Details:
+        selector: //div[@class="content-information-description"]/text()
+        postProcess:
+          - replace:
+              - regex: Description
+                with: ""
+      Image:
+        selector: //div[@class="vjs-poster"]/@style
+        postProcess:
+          - replace:
+              - regex: .+(?:url\(")(.+)(?:"\)\;)
+                with: "$1"
+      Studio:
+        Name:
+          fixed: Jawked
+driver:
+  useCDP: true        
+# Last Updated August 08, 2021

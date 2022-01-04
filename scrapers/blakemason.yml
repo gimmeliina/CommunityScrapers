@@ -1,0 +1,30 @@
+name: Blakemason
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - blakemason.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: /html/body/div/main/div[2]/div[1]/h1
+      Performers:
+        Name: //div[@class="video_stars"]/h4
+      Details:
+        selector: /html/body/div/main/div[2]/div[3]/div/text()
+      Tags:
+        Name: //div[@class="tags"]/a     
+      Studio:
+        Name:
+          Fixed: Blakemason
+      Image:
+        selector: //div[@class="vjs-poster"]/@style
+        postProcess:
+          - replace:
+              - regex: .+(?:url\(")(.+)(?:"\)\;)
+                with: "$1"
+              - regex: "//"
+                with: https://         
+driver:
+  useCDP: true
+# Last Updated August 08, 2021

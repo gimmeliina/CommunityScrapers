@@ -1,0 +1,23 @@
+name: Jawked
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - gayasiannetwork.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: /html/body/div[3]/div/h2[1]
+      Date:
+        selector: //span[class="content"]/text()
+        postProcess:
+          - parseDate: Feb 2th, 2006
+      Performers:
+        Name: //span[class="content"]/a
+      Details:
+        selector: /html/body/div[3]/div/h4
+      Image:
+        selector: //*[@id="mep_0"]/div/div[2]/div[1]/img/@src
+driver:
+  useCDP: true            
+# Last Updated August 08, 2021

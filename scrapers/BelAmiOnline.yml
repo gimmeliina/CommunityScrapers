@@ -1,0 +1,30 @@
+name: Bel Ami Online
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - belamionline.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: //span[@id="ContentPlaceHolder1_LabelTitle"]
+      Date:
+        selector: //span[@id="ContentPlaceHolder1_LabelReleased"]
+        postProcess:
+          - parseDate: 1/2/2006
+      Performers:
+        Name: //div[@class="actor"]/a
+      Details:
+        selector: //*[@id="top"]/main/div/div[2]/div/div[1]/section/div[1]/div[1]/div[2]/p[2]/text()
+      Tags:
+        Name: //*[@id="ContentPlaceHolder1_LabelTags"]/a
+      Studio:
+        Name:
+          Fixed: Bel Ami Online
+      Image:
+        selector: //source[@type="video/mp4"]/@src
+        postProcess:
+          - replace:
+              - regex: \/Movies.+
+                with: /Thumbnail8.jpg
+# Last Updated August 08, 2021

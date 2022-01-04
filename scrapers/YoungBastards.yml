@@ -1,0 +1,39 @@
+name: "Young Bastards"
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - youngbastards.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: //div[@class="videonewinfo"]/h2
+      Details: //div[@class="videonewinfo"]/p()
+      Date:
+        selector: //div[@class="videonewinfo"]/h5
+        postProcess:
+          - replace:
+              - regex: .*:.
+                with:
+          - parseDate: January 2, 2006
+      Studio:
+        Name: 
+          fixed: YoungBastards
+      Image:
+        selector: //script[contains(.,'jwplayer("videoplayer").setup')]/text()
+        postProcess:
+          - replace:
+              - regex: (.+image:\s+')(.+jpg)(.+)
+                with: $2
+              - regex: ^
+                with: "https://youngbastards.com/"       
+      Performers:
+        Name:  
+          selector: //p[contains(text(),"Cast:")]/text()
+          split: ", "
+          postProcess:
+            - replace:
+                - regex: .*:.
+                  with:
+
+# Last Updated June XX, 2020

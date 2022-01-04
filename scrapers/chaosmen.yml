@@ -1,0 +1,32 @@
+name: Chaosmen
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - chaosmen.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: /html/body/div[5]/div[3]/div[2]/div[1]/h3/text()
+      Date:
+        selector: /html/body/div[5]/div[3]/div[2]/div[5]/div/p[1]/text()
+        postProcess:
+          - parseDate: January 2, 2006
+      Performers:
+        Name: //div[@class="video_stars"]/h4
+      Details:
+        selector: /html/body/div[5]/div[3]/div[2]/div[5]/div/p[3]
+      Studio:
+        Name:
+          Fixed: Chaos Men
+      Image:
+        selector: //div[@class="vjs-poster"]/@style
+        postProcess:
+          - replace:
+              - regex: .+(?:url\(")(.+)(?:"\)\;)
+                with: "$1"
+              - regex: "faceimages"
+                with: https://www.chaosmen.com/faceimages          
+driver:
+  useCDP: true
+# Last Updated August 08, 2021
