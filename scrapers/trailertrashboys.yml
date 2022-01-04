@@ -1,0 +1,23 @@
+name: Trailer Trash Boys
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - trailertrashboys.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //div[@class="panel-heading"]/h3
+      Performers:
+        Name: //span[@class="update_models"]/a
+      Tags:
+        Name: //span[@class="label label-default"]
+      Details:
+        selector: //meta[@name="description"]/@content
+      Image:
+        selector: //*[@id="video-player-page"]/div/div[1]/div/div/a/div/img/@src
+      Studio:
+        Name:
+          fixed: Trailer Trash Boys
+# Last Updated August 08, 2021

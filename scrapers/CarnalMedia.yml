@@ -1,0 +1,32 @@
+name: "Carnal Media"
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - twinktop.com
+      - gaycest.com
+      - scoutboys.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    common:
+      $script: //script[@type="application/ld+json"]
+    scene:
+      Title: //div[@class="lwm_single_chapter_title"]/h1
+      Details: //div[@class="lwm_more_content_cnt"]/p()
+      Date:
+        selector: //div[@class="lwm_single_chapter_date"]
+        postProcess:
+          - replace:
+            - regex: "Published : "
+              with:
+          - parseDate: 02/02/06
+      Image:
+        selector: //video/@poster
+      Studio:
+        Name: //meta[@property="og:site_name"]/@content
+      Performers:
+        Name: 
+          selector: //div[@class="lwm_single_story_general_info"]/a
+driver:
+  useCDP: true          
+# Last Updated June XX, 2020

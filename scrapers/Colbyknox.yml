@@ -1,0 +1,21 @@
+name: Colby Knox
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - colbyknox.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //div[@class="hcontent video-detail-title"]/h1
+      Performers:
+        Name: //div[@class="model-tip-info"]/div/a
+      Details:
+        selector: //div[@class="reviews-section hcontent"]/p
+      Image:
+        selector: //*[@rel="model-image"]/@href
+      Studio:
+        Name:
+          fixed: Colby Knox
+# Last Updated August 08, 2021

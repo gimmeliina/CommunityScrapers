@@ -1,0 +1,20 @@
+name: brokestraightboys.com
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - brokestraightboys.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //*[@id="container"]/div/div/div[1]/text()
+      Performers:
+        Name: /html/body/div[3]/div/div/div/div/span/a
+      Tags:
+        Name: //div[@class="sceneCol sceneColCategories"]/a
+      Details:
+        selector: /html/body/div[3]/div/div/p
+      Image:
+        selector: //*[@id="player"]/a/div[1]/img/@src
+# Last Updated June 27, 2021
