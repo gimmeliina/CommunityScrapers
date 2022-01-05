@@ -27,4 +27,4 @@ xPathScrapers:
           - replace:
               - regex: \/Movies.+
                 with: /Thumbnail8.jpg
-# Last Updated August 08, 2021
+# Last Updated January 05, 2022
