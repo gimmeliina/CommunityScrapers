@@ -318,4 +318,4 @@ xPathScrapers:
       FrontImage: //a[@class='frontCoverImg']/@href
       BackImage: //a[@class='backCoverImg']/@href
 
-# Last Updated December 29, 2021
+# Last Updated January 05, 2022
