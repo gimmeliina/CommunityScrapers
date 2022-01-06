@@ -1226,7 +1226,7 @@ zoiestarr.com|ChickPass.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
 ## Non url scrapers
 
 The following scrapers do not support xxxByURL scraping and are not included to the above list. To keep the below list tidy please add scrapers keeping the list in alphabetical order by the .yml filename.
- For each scraper a short description, an optional comment with the usage and the related PR(s) with usage details would be appreciated.
+For each scraper a short description, an optional comment with the usage and the related PR(s) with usage details would be appreciated.
 
 Scraper | Description | Comments | PR
 --------|-------------|----------|:--:
