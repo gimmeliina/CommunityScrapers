@@ -1,0 +1,23 @@
+name: Collegedudes
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - collegedudes.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //div[@class="bluBar long"]/strong
+      Performers:
+        Name: /html/body/div[3]/div/div/div/div/span/a
+      Tags:
+        Name: //div[@class="sceneCol sceneColCategories"]/a
+      Details:
+        selector: /html/body/div[3]/div/div/p
+      Image:
+        selector: //*[@id="player"]/a/div[1]/img/@src
+      Studio:
+        Name:
+          fixed: CollegeDudes
+# Last Updated June 27, 2021

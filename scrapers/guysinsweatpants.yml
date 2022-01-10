@@ -1,0 +1,42 @@
+name: guysinsweatpants.com
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - guysinsweatpants.com
+    scraper: sceneScraper
+
+driver:
+  cookies:
+    - CookieURL: "https://guysinsweatpants.com"
+      Cookies:
+        - Name: "pp-accepted"
+          Domain: ".guysinsweatpants.com"
+          Value: "true"
+          Path: "/"
+
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Performers:
+        Name: //div[class="meta"]/a
+      Title:  //h1[@class="title"]
+      Date:
+        selector: //span[@class="text"]/text()
+        postProcess:
+          - replace:        
+            - regex: (\|.+)
+              with: ""
+          - parseDate: Jan 2, 2006
+      Details:
+        selector: //*[@id="content"]/p[1]
+      Image:
+        selector: //img[@class="bkg"]/@src
+        postProcess:
+          - replace:
+            - regex: "/protected-storage/"
+              with: https://guysinsweatpants.com/protected-storage/
+      Studio:
+        Name:
+          fixed: Guys In Sweatpants
+
+# Last Updated August 08, 2021

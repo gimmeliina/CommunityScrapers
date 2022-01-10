@@ -1,0 +1,20 @@
+name: Collegeboyphysicals.com
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - collegeboyphysicals.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //div[@class="bluBar long"]/strong
+      Performers:
+        Name: /html/body/div[3]/div/div/div/div/span/a
+      Tags:
+        Name: //div[@class="sceneCol sceneColCategories"]/a
+      Details:
+        selector: /html/body/div[3]/div/div/p
+      Image:
+        selector: /html/body/div[1]/div[2]/div[1]/a/img[1]/@src
+# Last Updated June 27, 2021
