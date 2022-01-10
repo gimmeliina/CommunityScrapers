@@ -422,6 +422,7 @@ freeones.com|FreeonesCommunity.yml|:x:|:x:|:x:|:heavy_check_mark:|-|Database
 freeones.xxx|FreeonesCommunity.yml|:x:|:x:|:x:|:heavy_check_mark:|-|-
 freeusefantasy.com|PaperStreetMedia.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
 freeusemilf.com|PaperStreetMedia.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
+french-twinks.com|Frenchtwinks.yml|:heavy_check_mark:|:x:|:x:|:x:|-|Gay
 freshoutofhighschool.com|NewSensationsNetworkSites.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
 frolicme.com|FrolicMe.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
 fuckedfeet.com|VNAGirls.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
@@ -915,6 +916,7 @@ samanthagrace.net|VNAGirls.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
 sapphicerotica.com|sapphix.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
 sapphix.com|sapphix.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
 sarajay.com|VNAGirls.yml|:heavy_check_mark:|:x:|:x:|:x:|-|-
+sayuncle.com|Sayuncle.yml|:heavy_check_mark:|:x:|:x:|:x:|-|Gay
 scarybigdicks.com|Hustler.yml|:heavy_check_mark:|:x:|:x:|:x:|CDP|-
 schoolgirlshd.com|Jhdv.yml|:heavy_check_mark:|:x:|:x:|:x:|-|JAV Uncensored
 scoreland.com|TheScoreGroup.yml|:heavy_check_mark:|:heavy_check_mark:|:x:|:x:|-|-
