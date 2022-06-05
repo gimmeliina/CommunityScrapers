@@ -20,7 +20,7 @@ xPathScrapers:
         Name: //*[@id="ContentPlaceHolder1_LabelTags"]/a
       Studio:
         Name:
-          Fixed: Bel Ami Online
+          fixed: Bel Ami Online
       Image:
         selector: //source[@type="video/mp4"]/@src
         postProcess:
