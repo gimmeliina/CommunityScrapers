@@ -26,5 +26,11 @@ xPathScrapers:
         postProcess:
           - replace:
               - regex: \/Movies.+
-                with: /Thumbnail8.jpg
-# Last Updated January 05, 2022
+                with: /Thumbnail6.jpg
+      Code:
+        selector: //form[@method="post"]/@action
+        postProcess:
+          - replace:
+              - regex: ^.*\=\s*
+                with:
+# Last Updated January 29, 2023
