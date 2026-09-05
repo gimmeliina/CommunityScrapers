@@ -80,8 +80,8 @@ xPathScrapers:
                 theassfactory: The Ass Factory
                 spermswallowers: Sperm Swallowers
       Groups:
-        Name: $details//span[@class="update_dvds"]/a/text()
-        URL: $details//span[@class="update_dvds"]/a/@href
+        Name: $details//span[@class="update_dvds"]/a/text()|$galinfo//span[@class="update_dvds"]/a/text()
+        URL: $details//span[@class="update_dvds"]/a/@href|$galinfo//span[@class="update_dvds"]/a/@href
       Image:
         selector: //script[contains(text(),'useimage')]/text()
         postProcess:
@@ -104,10 +104,6 @@ xPathScrapers:
       $scene: //div[@class="movie-player"]
     scene:
       Title: &newTitleAttr $scene//div[@class="movie_title"]
-      Date: &newDateAttr
-        selector: $scene//span[contains(., "Date:")]/following-sibling::text()
-        postProcess:
-          - parseDate: 01/02/2006
       Details: &newDetailsAttr $scene//span[contains(., "Description:")]/following-sibling::text()
       Tags: &newTagsAttr
         Name: $scene//a[contains(@href, "categories")]/text()
@@ -122,7 +118,6 @@ xPathScrapers:
 
     gallery:
       Title: *newTitleAttr
-      Date: *newDateAttr
       Details: *newDetailsAttr
       Tags: *newTagsAttr
       Performers: *newPerformersAttr
