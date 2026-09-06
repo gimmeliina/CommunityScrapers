@@ -1,4 +1,4 @@
-name: 'Karissa Diamond'
+name: "Karissa Diamond"
 sceneByURL:
   - action: scrapeXPath
     url:
@@ -15,7 +15,7 @@ xPathScrapers:
   sceneScraper:
     scene:
       Title: //div[@id="setTitle"]/text()
-      URL: //meta[@property='og:url']/@content
+      URLs: //meta[@property='og:url']/@content
       Studio:
         Name:
           fixed: "Karissa Diamond"
@@ -23,23 +23,16 @@ xPathScrapers:
         selector: //div[@id="setDate"]/text()
         postProcess:
           - parseDate: January 02, 2006
-      Details: //div[@class="well"]/text()
       Tags:
         Name: //div[@class[contains(.,'hidden')]]//a[@class='tag']/text()
       Performers:
         Name:
           fixed: "Karissa Diamond"
-      Image:      
-        selector: //meta[@property="og:image"]/@content
-# Uncomment if you prefer a 720p cover over 1080p
-#        postProcess:
-#          - replace:
-#            - regex: cover
-#              with: cover_720
+      Image: //meta[@property="og:image"]/@content
   galleryScraper:
     gallery:
       Title: //div[@id="setTitle"]/text()
-      URL: //meta[@property="og:url"]/@content
+      URLs: //meta[@property="og:url"]/@content
       Studio:
         Name:
           fixed: "Karissa Diamond"
@@ -47,11 +40,8 @@ xPathScrapers:
         selector: //div[@id="setDate"]/text()
         postProcess:
           - parseDate: January 02, 2006
-      Details: //div[@class="well"]/text()
       Tags:
         Name: //div[@class[contains(.,"hidden")]]//a[@class="tag"]/text()
       Performers:
         Name:
           fixed: "Karissa Diamond"
-
-# Last Updated October 15, 2020
