@@ -12,7 +12,6 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from Altwolia.scrape import performer_from_url
 from py_common import log
 from py_common.deps import ensure_requirements
 from py_common.types import (
@@ -87,7 +86,7 @@ def performer_from_url(url: str) -> str | None:
     return m.group(1)
 
 
-def scene_from_url(url: str):
+def scene_from_url(url: str) -> ScrapedScene | None:
     page = get(url)
     m = re.search(r"video_id\s*:\s*(\d+)", page)
     if not m:
