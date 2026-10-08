@@ -39,13 +39,17 @@ sceneByURL:
       - twinktop.com/videos/
     scraper: chapterSceneScraper
   # The network site has all scenes from the standalone sites
-  - action: scrapeXPath
+  - action: script
     url:
       - barebackplus.com/videos/
       - carnalplus.com/videos/
       - ftmplus.com/videos/
       - jockpack.com/videos/
-    scraper: networkScraper
+
+    script:
+      - python
+      - CarnalPlus.py
+      - scene-by-url
 xPathScrapers:
   sceneScraper:
     common:

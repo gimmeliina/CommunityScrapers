@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import time
+from typing import Any
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -104,11 +105,14 @@ def scene_from_url(url: str):
     )
     r.raise_for_status()
 
-    recomms = r.json().get("recomms") or []
-    if not recomms:
+    data = r.json().get("recomms") or []
+    if not data:
         sys.exit(f"Recombee returned nothing for video {vid}")
 
-    print(json.dumps(recomms[0].get("values", {}), ensure_ascii=False, indent=2))
+    log.debug(json.dumps(data[0].get("values", {}), ensure_ascii=False, indent=2))
+
+    return to_scraped_scene(data)
+
 
 ## Maybe to utilities?
 def clean_text(text: str) -> str:
@@ -116,34 +120,31 @@ def clean_text(text: str) -> str:
     text = re.sub(r"<\s*/?br\s*/?\s*>", "\n", text)
     return BeautifulSoup(text, "html.parser").get_text("", strip=False)
 
-def to_scraped_scene(api_scene: dict[str, Any], site: str) -> ScrapedScene:
+def to_scraped_scene(api_scene: list[str, Any]) -> ScrapedScene:
     scene: ScrapedScene = {}
-    if clip_id := api_scene.get("clip_id"):
-        scene["code"] = str(clip_id)
+    if directory := api_scene.get("directory"):
+        scene["code"] = directory
     if title := api_scene.get("title"):
-        scene["title"] = title.strip()
+        scene["title"] = title
     if description := api_scene.get("description"):
         scene["details"] = clean_text(description)
-    if urls := scene_urls(api_scene):
+    if urls := api_scene.get("network_url"):
         scene["urls"] = urls
     if release_date := api_scene.get("release_date"):
         scene["date"] = release_date
-    if image := largest_scene_image(api_scene):
-        scene["image"] = f"{IMAGE_CDN}/movies{image}"
-    if studio_name := api_scene.get("studio_name"):
-        scene["studio"] = {"name": studio_name}
-    if (movie_id := api_scene.get("movie_id")) and movie_exists(movie_id, site):
-        scene["movies"] = [movie_from_api_scene(api_scene, site)]
+    if image := api_scene.get("poster_url"):
+        scene["image"] = image
+    if studio := api_scene.get("channel"):
+        scene["studio"] = studio
 
-    tags = name_values_as_list(api_scene.get("categories", []))
-    tags += list_to_name_values(api_scene.get("content_tags", []))
+    tags = api_scene.get("categories", [])
+
     if tags:
         scene["tags"] = tags
 
-    if actors := api_scene.get("actors"):
-        scene["performers"] = actors_to_performers(actors, site)
-    if directors := api_scene.get("directors"):
-        scene["director"] = name_values_as_csv(directors)
+    actors = api_scene.get("models", [])
+    if actors:
+        scene["performers"] = actors
 
     return scene
 
