@@ -90,17 +90,19 @@ def scene_from_url(url: str) -> ScrapedScene | None:
     page = get(url)
     m = re.search(r"video_id\s*:\s*(\d+)", page)
     if not m:
-        sys.exit("video_id not found on page")
+        log.error("video_id not found on page")
+        return None
     vid = m.group(1)
 
     cfg = find_config(page, url)
     if not cfg:
-        sys.exit("RECOMBEE_CONFIG not found on page or in its JS files")
+        log.error("RECOMBEE_CONFIG not found on page or in its JS files")
+        return None
     db, token, region = cfg
 
     path = f"/{db}/recomms/users/test-user-1/items/?frontend_timestamp={int(time.time())}"
     sig = hmac.new(token.encode(), path.encode(), hashlib.sha1).hexdigest()
-    r = requests.post(
+    r = S.post(
         f"https://{api_host(region)}{path}&frontend_sign={sig}",
         json={
             "count": 1,
@@ -120,17 +122,21 @@ def scene_from_url(url: str) -> ScrapedScene | None:
     values = recomms[0].get("values", {})
     log.debug(json.dumps(values, ensure_ascii=False, indent=2))
 
-    return to_scraped_scene(values)
+    scene = to_scraped_scene(values)
+    return scene
 
 ## Maybe to utilities?
 def clean_text(text: str) -> str:
     text = text.replace("\\", "")
     text = re.sub(r"<\s*/?br\s*/?\s*>", "\n", text)
-    return BeautifulSoup(text, "html.parser").get_text("", strip=False)
+    text = BeautifulSoup(text, "html.parser").get_text("", strip=False)
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = "\n".join(line.strip() for line in text.split("\n"))
+    return re.sub(r"\n{3,}", "\n\n", text).strip()
 
 def full_size(url: str) -> str:
-    url = re.sub(r"-1x.*?\.jpg", "-full.jpg", url)
-    return re.sub(r"\d{4}", "9999", url)
+    url = re.sub(r"-1x[^/]*?\.jpg", "-full.jpg", url)
+    return re.sub(r"width=\d+", "width=9999", url)
 
 def to_date(value: Any) -> str | None:
     if isinstance(value, (int, float)):
@@ -139,31 +145,29 @@ def to_date(value: Any) -> str | None:
         return value[:10]
     return None
 
-def to_scraped_scene(api_scene: dict[str]) -> ScrapedScene:
+
+def to_scraped_scene(api_scene: dict[str, Any]) -> ScrapedScene:
     scene: ScrapedScene = {}
-    if directory := api_scene.get("directory"):
+    if isinstance(directory := api_scene.get("directory"), str):
         scene["code"] = directory
-    if title := api_scene.get("title"):
+    if isinstance(title := api_scene.get("title"), str):
         scene["title"] = title
-    if description := api_scene.get("description"):
+    if isinstance(description := api_scene.get("description"), str):
         scene["details"] = clean_text(description)
-    if urls := api_scene.get("network_url"):
-        scene["urls"] = urls
+    if isinstance(urls := api_scene.get("network_url"), str):
+        scene["urls"] = [urls]
+    elif isinstance(urls, list):
+        scene["urls"] = [u for u in urls if isinstance(u, str)]
     if release_date := to_date(api_scene.get("release_date")):
         scene["date"] = release_date
-    if image := api_scene.get("poster_url"):
+    if isinstance(image := api_scene.get("poster_url"), str):
         scene["image"] = full_size(image)
-    if studio := api_scene.get("channel"):
-        scene["studio"] = studio
-
-    tags = api_scene.get("categories", [])
-
-    if tags:
-        scene["tags"] = tags
-
-    actors = api_scene.get("models", [])
-    if actors:
-        scene["performers"] = actors
+    if isinstance(studio := api_scene.get("channel"), str):
+        scene["studio"] = {"name": studio}
+    if isinstance(tags := api_scene.get("categories"), list):
+        scene["tags"] = [{"name": t} for t in tags if isinstance(t, str)]
+    if isinstance(actors := api_scene.get("models"), list):
+        scene["performers"] = [{"name": a} for a in actors if isinstance(a, str)]
 
     log.debug(f"scene: {scene}")
     return scene
@@ -175,3 +179,11 @@ if __name__ == "__main__":
     match op, args:
         case "scene-by-url", {"url": url} if url:
             result = scene_from_url(url)
+        case _:
+            log.error(f"Operation: {op}, arguments: {json.dumps(args)} not implemented")
+            sys.exit(1)
+
+    if result is None:
+        print("null")
+        sys.exit(0)
+    print(json.dumps(result))
