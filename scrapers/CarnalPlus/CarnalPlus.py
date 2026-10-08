@@ -171,8 +171,7 @@ def to_scraped_scene(api_scene: dict[str]) -> ScrapedScene:
 
 
 if __name__ == "__main__":
-    ## op, args = scraper_args()
-    op, args = "scene-by-url", {"url": "https://jockpack.com/videos/brotherly-bonds-pledge-grayson-vol-1.html"}
+    op, args = scraper_args()
     log.debug(f"args: {args}")
     match op, args:
         case "scene-by-url", {"url": url} if url:
