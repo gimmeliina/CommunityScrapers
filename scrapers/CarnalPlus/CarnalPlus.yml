@@ -6,7 +6,7 @@ groupByURL:
     scraper: movieScraper
 sceneByURL:
   # These studios have standalone scenes
-  - action: scrapeXPath
+  - action: script
     url:
       - americanmusclehunks.com/videos/
       - cumdumpsluts.com/videos
@@ -18,7 +18,10 @@ sceneByURL:
       - jockpussy.com/videos/
       - staghomme.com/videos/
       - twinks.com/videos/
-    scraper: sceneScraper
+    script:
+      - python
+      - CarnalPlus.py
+      - scene-by-url
   # These studios organize their scenes into series with chapters
   # You can tell a studio belongs in this category
   # if there's a "SERIES" link in the main navbar for their site
