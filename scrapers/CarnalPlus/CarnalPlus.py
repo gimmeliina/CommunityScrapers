@@ -5,12 +5,14 @@ import os
 import re
 import sys
 import time
+from datetime import datetime, timezone
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
 
+from Altwolia.scrape import performer_from_url
 from py_common import log
 from py_common.deps import ensure_requirements
 from py_common.types import (
@@ -78,6 +80,12 @@ def find_config(page, page_url):
 def api_host(region):
     return f"client-rapi-{region.lower()}.recombee.com" if region else "client-rapi.recombee.com"
 
+def performer_from_url(url: str) -> str | None:
+    m = re.search(r"performer=(\d+)", url)
+    if not m:
+        return None
+    return m.group(1)
+
 
 def scene_from_url(url: str):
     page = get(url)
@@ -105,14 +113,15 @@ def scene_from_url(url: str):
     )
     r.raise_for_status()
 
-    data = r.json().get("recomms") or []
-    if not data:
-        sys.exit(f"Recombee returned nothing for video {vid}")
+    recomms = r.json().get("recomms") or []
+    if not recomms:
+        log.error(f"Recombee returned nothing for video {vid}")
+        return None
 
-    log.debug(json.dumps(data[0].get("values", {}), ensure_ascii=False, indent=2))
+    values = recomms[0].get("values", {})
+    log.debug(json.dumps(values, ensure_ascii=False, indent=2))
 
-    return to_scraped_scene(data)
-
+    return to_scraped_scene(values)
 
 ## Maybe to utilities?
 def clean_text(text: str) -> str:
@@ -120,7 +129,18 @@ def clean_text(text: str) -> str:
     text = re.sub(r"<\s*/?br\s*/?\s*>", "\n", text)
     return BeautifulSoup(text, "html.parser").get_text("", strip=False)
 
-def to_scraped_scene(api_scene: list[str, Any]) -> ScrapedScene:
+def full_size(url: str) -> str:
+    url = re.sub(r"-1x.*?\.jpg", "-full.jpg", url)
+    return re.sub(r"\d{4}", "9999", url)
+
+def to_date(value: Any) -> str | None:
+    if isinstance(value, (int, float)):
+        return datetime.fromtimestamp(value, tz=timezone.utc).strftime("%Y-%m-%d")
+    if isinstance(value, str):
+        return value[:10]
+    return None
+
+def to_scraped_scene(api_scene: dict[str]) -> ScrapedScene:
     scene: ScrapedScene = {}
     if directory := api_scene.get("directory"):
         scene["code"] = directory
@@ -130,10 +150,10 @@ def to_scraped_scene(api_scene: list[str, Any]) -> ScrapedScene:
         scene["details"] = clean_text(description)
     if urls := api_scene.get("network_url"):
         scene["urls"] = urls
-    if release_date := api_scene.get("release_date"):
+    if release_date := to_date(api_scene.get("release_date")):
         scene["date"] = release_date
     if image := api_scene.get("poster_url"):
-        scene["image"] = image
+        scene["image"] = full_size(image)
     if studio := api_scene.get("channel"):
         scene["studio"] = studio
 
@@ -146,13 +166,14 @@ def to_scraped_scene(api_scene: list[str, Any]) -> ScrapedScene:
     if actors:
         scene["performers"] = actors
 
+    log.debug(f"scene: {scene}")
     return scene
 
 
 if __name__ == "__main__":
-    op, args = scraper_args()
+    ## op, args = scraper_args()
+    op, args = "scene-by-url", {"url": "https://jockpack.com/videos/brotherly-bonds-pledge-grayson-vol-1.html"}
     log.debug(f"args: {args}")
-
     match op, args:
         case "scene-by-url", {"url": url} if url:
             result = scene_from_url(url)
