@@ -151,7 +151,7 @@ def to_scraped_scene(api_scene: dict[str, Any]) -> ScrapedScene:
     if isinstance(directory := api_scene.get("directory"), str):
         scene["code"] = directory
     if isinstance(title := api_scene.get("title"), str):
-        scene["title"] = title
+        scene["title"] = re.sub(r"\s*\|\s*", " - ", title).strip()
     if isinstance(description := api_scene.get("description"), str):
         scene["details"] = clean_text(description)
     if isinstance(urls := api_scene.get("network_url"), str):
